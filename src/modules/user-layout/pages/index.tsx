@@ -1,10 +1,20 @@
+import { Outlet } from "react-router-dom";
+
+import { Footer, Header } from "../../../components/pages";
 
 const Index = () => {
-  return (
-    <div>
-      <h1>user-layout</h1>
-    </div>
-  )
-}
+ 
 
-export default Index
+ 
+  return (
+    <>
+   <Header/>
+   <div className="mt-[70px]">
+   <Outlet />
+   </div>
+    <Footer/>
+    </>
+  );
+};
+
+export default Index;

@@ -1,3 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+#footer{
+    box-shadow: 0px 0px 15px rgb(112, 111, 111);
+}
