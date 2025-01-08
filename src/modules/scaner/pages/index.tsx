@@ -1,40 +1,44 @@
-import { useState, useEffect, useRef } from "react";
-import { BrowserMultiFormatReader } from "@zxing/library";  
+import { Html5QrcodeScanner } from "html5-qrcode";
+import { useEffect, useState } from "react";
 
-const ScannerPage = () => {
-  const [scannedData, setScannedData] = useState<string | null>(null);  
-  const videoRef = useRef<HTMLVideoElement | null>(null); 
+const Index = () => {
+  const [scanResult, setScanResult] = useState<string | null>(null);
 
   useEffect(() => {
-    const codeReader = new BrowserMultiFormatReader(); 
+    const scanner = new Html5QrcodeScanner("reader", {
+      fps: 5,
+    }, false);
 
-    if (videoRef.current) {
-      codeReader
-        .decodeFromVideoDevice(null, videoRef.current, (result, error) => {
-          if (result) {
-            setScannedData(result.getText()); 
-          }
-          if (error) {
-            console.error(error); 
-          }
-        })
-        .catch((err) => {
-          console.error("Error during barcode scanning:", err); 
-        });
+    scanner.render(success, error);
 
-      return () => {
-        codeReader.reset();
-      };
+    function success(result:string) {
+      setScanResult(result); 
     }
+
+    function error(err: string) {
+      console.log(err); 
+    }
+
+    return () => {
+      scanner.clear();
+    };
   }, []);
 
   return (
     <div className="w-[90%] m-auto">
-      <h1 className="text-center">QR and Barcode Scanner</h1>
-      <video ref={videoRef} className="w-auto m-auto" />
-      {scannedData && <p>Scanned Data: {scannedData}</p>}
+      <h1>QR Code Scanner</h1>
+      {scanResult ? (
+        <div >
+          Success:{" "}
+          <a href={"https://" + scanResult}>
+            {scanResult}
+          </a>
+        </div>
+      ) : (
+        <div id="reader" className="w-[300px] md:w-[500px]  m-auto"></div>
+      )}
     </div>
   );
 };
 
-export default ScannerPage;
+export default Index;
