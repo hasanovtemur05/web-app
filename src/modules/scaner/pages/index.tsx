@@ -6,32 +6,28 @@ const Index = () => {
 
   useEffect(() => {
     const scanner = new Html5QrcodeScanner(
-      "reader", // Element ID
+      "reader", 
       {
         qrbox: {
           width: 250,
           height: 250,
         },
-        fps: 5, // Frames per second
+        fps: 5,
       },
-      false // Verbose logging
+      false 
     );
 
-    // Render scanner
     scanner.render(onSuccess, onError);
 
-    // Clean up scanner on unmount
     return () => {
       scanner.clear();
     };
 
-    // Success callback
     function onSuccess(result: string) {
       console.log("Scan success:", result);
       setScanResult(result);
     }
 
-    // Error callback
     function onError(err: string) {
       console.error("Scan error:", err);
     }
