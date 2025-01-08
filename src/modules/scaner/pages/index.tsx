@@ -5,41 +5,55 @@ const Index = () => {
   const [scanResult, setScanResult] = useState<string | null>(null);
 
   useEffect(() => {
-    const scanner = new Html5QrcodeScanner("reader", {
-      qrbox: {
-        width: 250,
-        height: 250,
+    const scanner = new Html5QrcodeScanner(
+      "reader", // Element ID
+      {
+        qrbox: {
+          width: 250,
+          height: 250,
+        },
+        fps: 5, // Frames per second
       },
-      fps: 5,
-    }, false);
+      false // Verbose logging
+    );
 
-    scanner.render(success, error);
+    // Render scanner
+    scanner.render(onSuccess, onError);
 
-    function success(result:string) {
-      setScanResult(result); 
-    }
-
-    function error(err: string) {
-      console.log(err); 
-    }
-
+    // Clean up scanner on unmount
     return () => {
       scanner.clear();
     };
+
+    // Success callback
+    function onSuccess(result: string) {
+      console.log("Scan success:", result);
+      setScanResult(result);
+    }
+
+    // Error callback
+    function onError(err: string) {
+      console.error("Scan error:", err);
+    }
   }, []);
 
   return (
     <div className="w-[90%] m-auto">
-      <h1>QR Code Scanner</h1>
+      <h1 className="text-center text-lg font-semibold">QR Code Scanner</h1>
       {scanResult ? (
-        <div >
-          Success:{" "}
-          <a href={"https://" + scanResult}>
+        <div className="mt-4">
+          <h2 className="text-green-600">Scan Success:</h2>
+          <a
+            href={scanResult.startsWith("http") ? scanResult : `https://${scanResult}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 underline"
+          >
             {scanResult}
           </a>
         </div>
       ) : (
-        <div id="reader" className="w-[300px] md:w-[500px]  m-auto"></div>
+        <div id="reader" className="w-[300px] md:w-[500px] m-auto mt-4"></div>
       )}
     </div>
   );
