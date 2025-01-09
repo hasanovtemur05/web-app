@@ -42,16 +42,16 @@ const Index = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center  bg-white p-6">
+    <div className="flex flex-col justify-center items-center p-6">
       <div
         id="reader"
-        className="w-full max-w-[350px] aspect-square bg-white border-2 border-gray-300 rounded-lg shadow-md mb-6"
+        className="w-[300px] md:w-[400px]  bg-white border-2 border-gray-300 rounded-lg mb-6"
       ></div>
       
       {scanResult && (
-        <div className="w-full max-w- bg-white p-6 rounded-lg shadow-md text-center">
-          <h2 className="text-xl font-semibold text-gray-700 mb-3">Scan Result:</h2>
-          <p className="text-lg text-gray-600">{scanResult}</p>
+        <div className="w-[300px] md:w-[400px]  bg-white p-4 rounded-lg text-center">
+          <h2 className="text-lg font-medium text-gray-700 mb-3">Scan Result:</h2>
+          <a href={scanResult} className="text-sm text-blue-600">{scanResult}</a>
         </div>
       )}
     </div>
